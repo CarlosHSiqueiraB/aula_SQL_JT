@@ -1,0 +1,33 @@
+SELECT 
+    CONCAT(c.first_name, ' ', c.last_name) AS nome_completo,
+    i.invoice_id,
+    i.total
+FROM customer c
+INNER JOIN invoice i ON c.customer_id = i.customer_id
+ORDER BY i.total DESC;
+
+-- Execute os 2 juntos
+with total_cliente as ( -- <- Aqui começa a fazer a subQuery
+    select
+    customer_id,
+    sum(total) as total_por_cliente
+    from
+    invoice
+    group by customer_id
+)
+select avg(total_por_cliente) from total cliente -- <- Aqui puxa as informações da subQuery temporária
+
+
+--CTE com multiplas query
+with totais as (
+    select customer_id, sum(total) as total_gasto
+    from invoice
+    group by customer_id
+),
+media as (
+    select avg(total_gasto) as media_geral
+    from totais
+)
+select customer_id, total_gasto
+from totais
+where total_gasto > (select media_geral from media);
