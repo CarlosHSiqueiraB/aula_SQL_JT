@@ -1,0 +1,190 @@
+1-
+select
+  country, count(customer_id) as total_clientes
+from
+  customer
+group by
+  country
+having
+  count(customer_id) > 5
+order by
+  total_clientes desc;
+Comentário: O que está errado: está agrupando city, além do mais o having está selecionando no mínimo, no lugar de está selecionando acima de 5, e também não está selecionando o país (select)
+
+como consertar: tem que ser group by country e não city, Apenas países com mais de 5 clientes (>5), selecionar o país com select
+ 
+
+2- 
+select
+  support_rep_id as atendente,
+  count(*) as total_clientes
+from
+  customer
+group by
+  atendente
+having
+count(*) >15
+order by
+  total_clientes desc;
+Comentário: A resolução do problema foi realmente fácil de identificar, primeiro precisei ler a questão para descobrir que precisava de um limite de mais de 15 cliente por atendentes, após isso, só foi necessário alterar o order by para desc, assim mostrando do maior para o menor.
+
+3- 
+select
+  country as pais,
+  count(customer_id) as clientes_com_empresa
+from
+  customer
+group by
+  pais
+having
+  count(customer_id) >= 3
+order by clientes_com_empresa desc;
+Comentário: A resolução mais simples no momento, quase todo código estava correto, apenas faltando a resolução do “having”, mudando o (count de < 3) para (count >= 3), pois o padrão de negócios pede no mínimo 3 clientes.
+4- 
+```
+1. **A query incorreta** —
+select
+  state as estado,
+  count(customer_id) as total_clientes
+from
+  customer
+group by
+  estado
+order by
+  total_clientes desc;
+2. **O que foi encontrado** —
+O programa retorna o esperado, mas com a inclussão de estados classificados como NULL
+3. **Como chegaram na solução** —
+Percebi a falta de um filtro e usei o having state is not null
+
+
+4. **A query correta** —
+select
+  state as estado,
+  count(customer_id) as total_clientes
+from
+  customer
+group by
+  estado
+having state is not null
+order by  
+  total_clientes desc;
+
+
+---
+
+
+5- 
+
+
+1. **A query incorreta** —
+select
+  country as pais
+from
+  customer
+group by
+  pais
+having
+  count(*) > 2
+order by
+  pais asc;
+
+
+2. **O que foi encontrado** —
+falta de uma contaguem do numero de fax
+"having count(*) > 2" muito generalist
+e falta de um filtro para fax NULL
+
+
+3. **Como chegaram na solução** —
+coloquei um   COUNT(Fax) as NumeroComFax,
+antes de engrupar fiz um filtro no FAX para retirar os NULL
+e especifiquei o count() para count(fax)
+4. **A query correta** —
+select
+  country as pais,
+  COUNT(Fax) as NumeroComFax
+from
+  customer
+where Fax is not null
+group by
+  country
+having
+  COUNT(Fax) > 2
+order by
+  pais desc;
+
+
+
+6-
+select
+  billing_state as estado,
+  count(total) as total_faturas
+from
+  invoice
+where
+  billing_state is not null
+group by
+  billing_state
+having
+  count(total) > 5
+order by
+  total_faturas desc;
+
+
+7- 
+select
+  billing_contry as pais,
+  min(total) as menor_fatura,
+  max(total) as maior_fatura
+from
+  invoice
+group by
+  billing_country
+order by
+  maior_fatura desc;
+
+Comentário: A solução foi adicionar o billing_country como país no select para permitir o funcionamento do order by.
+
+8-
+select
+  billing_city as cidade,
+  count(invoice_id) as total_faturas
+from
+  invoice
+  where
+  billing_state = 'ON'
+group by
+  cidade
+having
+  count(invoice_id) > 3
+order by
+  cidade desc;
+Comentário: Essa foi um bate cabeça grande, inicialmente achei que o erro era apenas o billing city que não conseguia fazer a conexão entre todas as cidades, então mudei para billing state, a partir daí notei que a questão pedia as cidades, e não os estados, então fiz um filtro com where para escolher apenas cidades do “ON”, que é o Canadá, e após isso só fiz a conversão de maior para menor.
+
+9-
+
+
+select
+  extract(quarter from invoice_date)
+  sum(total) as faturamento_total
+from
+  invoice
+group by
+  extract(quarter from invoice_date)
+order by
+  extract(quarter from invoice_date) asc;
+Comentário: A solução foi encontrada ao adicionar o extract no select e usá-lo como parâmetro no group by. 
+
+10-
+select distinct
+ billing_city as city, count(customer_id) as total_clientes
+from
+  customer
+group by
+  city
+having
+  count(customer_id) >= 2
+order by
+  total_clientes desc;
+Comentário: A resolução de problemas foi simples, adicionei a cidade que estava faltando ao select, e tive que pesquisar como funcionava esse status “distinto”, então fui ao google pesquisar, descobrir como funcionava e apliquei aqui após testar os valores, pois fiquei na dúvida se as respostas eram realmente tudo 2.
