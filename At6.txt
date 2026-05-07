@@ -1,0 +1,6 @@
+select genre_id as genero,
+count(track_id) as total_faixas
+from
+track
+group by genero
+order by gênero
