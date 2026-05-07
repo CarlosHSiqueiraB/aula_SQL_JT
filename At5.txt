@@ -1,0 +1,17 @@
+//A1
+select country from customer;
+
+select first_name as nome, last_name as sobrenome, country as pais from customer
+where country in ('Brazil', 'Canada', 'France')
+order by last_name;
+
+
+//A2
+select * from track
+
+select name as nome, milliseconds as tempo_milisegundos from track
+where milliseconds between 240000 and 360000 order by milliseconds desc
+
+//A3
+select count(*) as compositores_null from track
+where composer is null
