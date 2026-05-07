@@ -1,0 +1,22 @@
+select genre_id, count(track_id) as qtd_Faixa from track
+group by genre_id
+order by genre_id
+desc
+
+select genre_id, count(track_id) as qtd_Faixa from track
+group by genre_id
+order by qtd_Faixa
+desc limit 1
+
+select genre_id, count(track_id) as qtd_Faixa from track
+group by genre_id 
+having count(*) > 100
+order by qtd_Faixa
+desc
+
+select customer_id, count(*) as qtd_Fatura from invoice
+group by customer_id
+having count(*)> 5
+order by customer_id
+asc
+
