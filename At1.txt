@@ -1,0 +1,10 @@
+select * from customer limit 5;
+select first_name, last_name, city, country from customer limit 3;
+//puxa colunas da tabela cliente e limita as linhas para 3
+
+select * from album limit 5;
+//puxa tudo da lista álbum, mas limita a 5
+
+
+select name, unit_price, composer from track
+//puxa especificamente o name, unit_price, composer do track
